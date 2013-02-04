@@ -40,12 +40,15 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 
-group :test do
-  gem 'rspec-rails'
-end
-
 group :development do
-  gem 'rspec-rails'
   gem 'hpricot'
   gem 'ruby_parser'
+end
+
+
+group :test, :development do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'win32console'
+  gem 'spork-rails'
 end
