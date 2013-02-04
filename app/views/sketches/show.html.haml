@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Topic:
+  = @sketch.topic_id
+%p
+  %b Artist:
+  = @sketch.artist_id
+%p
+  %b Url:
+  = @sketch.url
+%p
+  %b Upload date:
+  = @sketch.upload_date
+
+= link_to 'Edit', edit_sketch_path(@sketch)
+\|
+= link_to 'Back', sketches_path

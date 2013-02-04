@@ -1,0 +1,25 @@
+%h1 Listing sketches
+
+%table
+  %tr
+    %th Topic
+    %th Artist
+    %th Url
+    %th Upload date
+    %th
+    %th
+    %th
+
+  - @sketches.each do |sketch|
+    %tr
+      %td= sketch.topic_id
+      %td= sketch.artist_id
+      %td= sketch.url
+      %td= sketch.upload_date
+      %td= link_to 'Show', sketch
+      %td= link_to 'Edit', edit_sketch_path(sketch)
+      %td= link_to 'Destroy', sketch, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Sketch', new_sketch_path

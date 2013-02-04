@@ -1,0 +1,22 @@
+= form_for @collection do |f|
+  - if @collection.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@collection.errors.count, "error")} prohibited this collection from being saved:"
+      %ul
+        - @collection.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :date_string
+    = f.text_field :date_string
+  .field
+    = f.label :start_date
+    = f.date_select :start_date
+  .field
+    = f.label :location
+    = f.text_field :location
+  .actions
+    = f.submit 'Save'
