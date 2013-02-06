@@ -1,8 +1,18 @@
 class ArtistsController < ApplicationController
   # GET /artists
   # GET /artists.json
+  handles_sortable_columns
   def index
-    @artists = Artist.all
+    order = sortable_column_order do |column, direction|
+      case column
+      when "count"
+        "3 #{direction}"
+      else
+        "name #{direction}"
+      end
+    end
+
+    @artists = Artist.select('artists.id, name, count(sketches.id)').joins(:sketches).group('artists.id').order(order)
 
     respond_to do |format|
       format.html # index.html.erb

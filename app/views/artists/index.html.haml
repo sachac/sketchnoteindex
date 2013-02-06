@@ -2,14 +2,14 @@
 
 %table.table.table-striped
   %tr
-    %th= t('.name')
-    %th= t('.count')
+    %th= sortable_column t('.count'), column: 'count', direction: :desc
+    %th= sortable_column t('.name'), column: 'name'
     %th
      
   - @artists.each do |artist|
     %tr
+      %td= link_to artist.sketches.count, artist
       %td= link_to artist.name, artist
-      %td= link_to artist.sketches.size, artist
       %td= action_list artist
 %br
 - if can? :create, Artist
