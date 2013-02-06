@@ -1,5 +1,5 @@
 %h1
-  - if @artist.image_url
+  - unless @artist.image_url.blank?
     = image_tag(@artist.image_url)
   = @artist.name
 = link_to @artist.url, @artist.url if @artist.url
