@@ -1,6 +1,4 @@
 class CollectionsController < ApplicationController
-  caches_page :index
-
   # GET /collections
   # GET /collections.json
   def index
@@ -54,7 +52,7 @@ class CollectionsController < ApplicationController
   # POST /collections.json
   def create
     @collection = Collection.new(params[:collection])
-    expire_page :action => :index
+
     respond_to do |format|
       if @collection.save
         format.html { redirect_to @collection, notice: 'Collection was successfully created.' }
@@ -70,8 +68,6 @@ class CollectionsController < ApplicationController
   # PUT /collections/1.json
   def update
     @collection = Collection.find(params[:id])
-    expire_page :action => :index
-    expire_page :controller => :actions
 
     respond_to do |format|
       if @collection.update_attributes(params[:collection])
