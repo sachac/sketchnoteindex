@@ -1,23 +1,18 @@
-%h1 Listing topics
-
-%table
+= render 'contact_me'
+%table.table-striped.table
   %tr
-    %th Name
+    %th= sortable_column t('topic'), :column => 'topic'
     %th People
-    %th Collection
-    %th
-    %th
-    %th
+    %th= sortable_column t('collection'), :column => 'collection'
+    %th Actions
 
   - @topics.each do |topic|
     %tr
-      %td= topic.name
+      %td= link_to topic.name, topic
       %td= topic.people
-      %td= topic.collection_id
-      %td= link_to 'Show', topic
-      %td= link_to 'Edit', edit_topic_path(topic)
-      %td= link_to 'Destroy', topic, method: :delete, data: { confirm: 'Are you sure?' }
-
+      %td= link_to topic.collection.name, topic.collection if topic.collection
+      %td= action_list topic
+      
 %br
-
-= link_to 'New Topic', new_topic_path
+- if can? :create, Topic
+  = link_to 'New Topic', new_topic_path

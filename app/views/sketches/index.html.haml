@@ -1,5 +1,6 @@
-%div{:style => 'text-align: right'}
-  = link_to t('download_as_spreadsheet'), url_for(:only_path => false, :format => :csv)
+= render 'contact_me'
+
+.pull-right= link_to t('download_as_spreadsheet'), url_for(:only_path => false, :format => :csv)
 %table.table.table-striped
   %tr
     %th= sortable_column t('collection'), :column => 'collection'

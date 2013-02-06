@@ -1,8 +1,19 @@
 class TopicsController < ApplicationController
   # GET /topics
   # GET /topics.json
+  handles_sortable_columns
   def index
-    @topics = Topic.all
+    order = sortable_column_order do |column, direction|
+      case column
+      when "topic"
+        "topics.name #{direction}"
+      when 'collection'
+        "collections.name #{direction}, topics.name #{direction}"
+      else
+        "topics.name ASC"
+      end
+    end
+    @topics = Topic.includes(:collection).order(order)
 
     respond_to do |format|
       format.html # index.html.erb
