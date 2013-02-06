@@ -15,4 +15,5 @@
  *= require formtastic-plus-bootstrap/responsive
  *= require main
  *= require bootstrap-typeahead
+ *= require bootstrap-footer
  */

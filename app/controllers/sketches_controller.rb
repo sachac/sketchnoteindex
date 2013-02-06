@@ -14,8 +14,10 @@ class SketchesController < ApplicationController
         "topics.name #{direction}, artists.name #{direction}"
       when "artists.name", "sketches.created_at"
         "#{column} #{direction}"
-      else
+      when 'collection'
         "collections.name #{direction}, topics.name #{direction}, artists.name #{direction}"
+      else
+        "sketches.created_at DESC"
       end
     end
     @sketches = Sketch.includes(:topic => :collection).includes(:artist).order(order)

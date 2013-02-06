@@ -12,5 +12,5 @@
       %td= link_to artist.sketches.size, artist
       %td= action_list artist
 %br
-
-= link_to 'New Artist', new_artist_path
+- if can? :create, Artist
+  = link_to 'New Artist', new_artist_path

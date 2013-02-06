@@ -10,9 +10,12 @@
     %tr
       %th{colspan: 3}
         %h2{id: "collection-" + (collection && collection.name && collection.name.parameterize || '')}
-          = collection.name if collection
+          = link_to collection.name, collection if collection
           = action_list collection if collection
         - if collection
+          = succeed ':' do
+            = pluralize @artists[collection].size, t('artist').downcase
+          
           = @artists[collection].map { |key, artist| link_to artist.name, artist }.join(', ').html_safe
     - topic_list.each do |topic, sketch_list|
       %tr
