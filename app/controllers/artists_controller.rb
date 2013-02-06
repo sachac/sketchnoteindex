@@ -2,6 +2,7 @@ class ArtistsController < ApplicationController
   # GET /artists
   # GET /artists.json
   handles_sortable_columns
+  caches_page :index
   def index
     order = sortable_column_order do |column, direction|
       case column
@@ -52,6 +53,7 @@ class ArtistsController < ApplicationController
   # POST /artists.json
   def create
     @artist = Artist.new(params[:artist])
+    expire_page :action => :index
 
     respond_to do |format|
       if @artist.save
@@ -68,6 +70,9 @@ class ArtistsController < ApplicationController
   # PUT /artists/1.json
   def update
     @artist = Artist.find(params[:id])
+    expire_page :action => :index
+    expire_page :controller => :sketches, :action => :index
+    expire_page :controller => :collection, :action => :index
 
     respond_to do |format|
       if @artist.update_attributes(params[:artist])
@@ -83,6 +88,10 @@ class ArtistsController < ApplicationController
   # DELETE /artists/1
   # DELETE /artists/1.json
   def destroy
+    expire_page :action => :index
+    expire_page :controller => :sketches, :action => :index
+    expire_page :controller => :collection, :action => :index
+
     @artist = Artist.find(params[:id])
     @artist.destroy
 

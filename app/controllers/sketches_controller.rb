@@ -1,6 +1,8 @@
 class SketchesController < ApplicationController
   # GET /sketches
   # GET /sketches.json
+  caches_page :index
+
   skip_before_filter :authenticate_user!, :only => [:grouped, :index, :show]
   handles_sortable_columns
   autocomplete :artist, :name
@@ -58,8 +60,11 @@ class SketchesController < ApplicationController
   # POST /sketches
   # POST /sketches.json
   def create
-    @sketch = Sketch.process(params[:sketch]) 
+    expire_page :action => :index
+    expire_page :controller => :sketches, :action => :index
+    expire_page :controller => :collection, :action => :index
 
+    @sketch = Sketch.process(params[:sketch]) 
     respond_to do |format|
       if @sketch.save
         format.html { redirect_to (!params[:destination].blank? && params[:destination]) || new_sketch_path(nil, params), notice: 'Sketch was successfully created.' }
@@ -74,6 +79,10 @@ class SketchesController < ApplicationController
   # PUT /sketches/1
   # PUT /sketches/1.json
   def update
+    expire_page :action => :index
+    expire_page :controller => :sketches, :action => :index
+    expire_page :controller => :collection, :action => :index
+
     @sketch = Sketch.find(params[:id])
     @sketch.url = params[:sketch][:url]
     old_topic = nil
@@ -114,6 +123,7 @@ class SketchesController < ApplicationController
   # DELETE /sketches/1
   # DELETE /sketches/1.json
   def destroy
+    expire_page :action => :index
     @sketch = Sketch.find(params[:id])
     @sketch.destroy
 

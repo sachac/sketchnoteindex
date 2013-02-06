@@ -1,4 +1,5 @@
 class TopicsController < ApplicationController
+  caches_page :index
   # GET /topics
   # GET /topics.json
   handles_sortable_columns
