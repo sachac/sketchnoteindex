@@ -5,7 +5,6 @@ SketchnoteIndex::Application.routes.draw do
     get :autocomplete_artist_name, :on => :collection
     get :autocomplete_collection_name, :on => :collection
     get :autocomplete_topic_name, :on => :collection
-    get :grouped, :on => :collection
   end
 
 

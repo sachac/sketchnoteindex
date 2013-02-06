@@ -2,8 +2,19 @@ class CollectionsController < ApplicationController
   # GET /collections
   # GET /collections.json
   def index
-    @collections = Collection.order('name')
-    
+    if request.format == :html
+      sketches = Sketch.includes(:topic => :collection).includes(:artist).order("collections.name, topics.name, artists.name")
+      @by_collection = Hash.new { |h,k| h[k] = Hash.new { |h2,k2| h2[k2] = Array.new }}
+      @artists = Hash.new { |h,k| h[k] = Hash.new }
+      sketches.each do |sketch|
+        collection = sketch.topic && sketch.topic.collection
+        topic = sketch.topic
+        @by_collection[collection][topic] << sketch
+        @artists[collection][sketch.artist] = sketch.artist
+      end
+    else
+      @collections = Collection.order('name')
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @collections }
