@@ -4,24 +4,34 @@ gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem 'mysql2'
 gem 'sqlite3'
 gem 'devise'
-gem 'bootstrap-sass'
 gem 'haml-rails'
+gem 'amatch'
 gem 'timeline_fu'
-
+gem 'nokogiri'
+gem 'rails3-jquery-autocomplete', :git => 'git://github.com/edsimpson/rails3-jquery-autocomplete.git'
+gem 'formtastic'
+gem 'paperclip'
+gem 'formtastic-plus-bootstrap'
+gem 'handles_sortable_columns'
+gem 'cancan'
+gem 'ruby-standard-deviation'
+gem 'chronic'
+gem 'comma', :git => "git://github.com/crafterm/comma.git"
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+  gem 'bootstrap-sass-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
 end
+gem 'therubyracer', :platforms => :ruby
 
 gem 'jquery-rails'
 
@@ -52,3 +62,4 @@ group :test, :development do
   gem 'win32console'
   gem 'spork-rails'
 end
+

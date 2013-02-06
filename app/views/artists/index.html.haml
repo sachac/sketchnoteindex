@@ -1,23 +1,16 @@
-%h1 Listing artists
+%h1= t('.title')
 
-%table
+%table.table.table-striped
   %tr
-    %th Name
-    %th Image url
-    %th Url
+    %th= t('.name')
+    %th= t('.count')
     %th
-    %th
-    %th
-
+     
   - @artists.each do |artist|
     %tr
-      %td= artist.name
-      %td= artist.image_url
-      %td= artist.url
-      %td= link_to 'Show', artist
-      %td= link_to 'Edit', edit_artist_path(artist)
-      %td= link_to 'Destroy', artist, method: :delete, data: { confirm: 'Are you sure?' }
-
+      %td= link_to artist.name, artist
+      %td= link_to artist.sketches.size, artist
+      %td= action_list artist
 %br
 
 = link_to 'New Artist', new_artist_path

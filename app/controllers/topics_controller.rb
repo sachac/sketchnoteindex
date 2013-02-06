@@ -14,7 +14,9 @@ class TopicsController < ApplicationController
   # GET /topics/1.json
   def show
     @topic = Topic.find(params[:id])
-
+    @sketches = @topic.sketches.includes(:artist).order('upload_date, artists.name')
+    @sketch = Sketch.new(:topic_id => @topic.id)
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @topic }

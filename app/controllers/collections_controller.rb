@@ -2,8 +2,8 @@ class CollectionsController < ApplicationController
   # GET /collections
   # GET /collections.json
   def index
-    @collections = Collection.all
-
+    @collections = Collection.order('name')
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @collections }
@@ -14,7 +14,7 @@ class CollectionsController < ApplicationController
   # GET /collections/1.json
   def show
     @collection = Collection.find(params[:id])
-
+    @sketches = @collection.sketches.includes(:topic).includes(:artist).order('topics.name, artists.name')
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @collection }

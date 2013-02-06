@@ -1,5 +1,12 @@
 SketchnoteIndex::Application.routes.draw do
-  resources :sketches
+  devise_for :users
+
+  resources :sketches do
+    get :autocomplete_artist_name, :on => :collection
+    get :autocomplete_collection_name, :on => :collection
+    get :autocomplete_topic_name, :on => :collection
+    get :grouped, :on => :collection
+  end
 
 
   resources :topics
@@ -9,7 +16,6 @@ SketchnoteIndex::Application.routes.draw do
 
 
   resources :collections
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -60,7 +66,7 @@ SketchnoteIndex::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'sketches#index'
 
   # See how all your routes lay out with "rake routes"
 

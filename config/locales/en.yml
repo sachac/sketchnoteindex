@@ -2,8 +2,38 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  download_as_spreadsheet: "Download as spreadsheet"
   app_name: "Sketchnote Index"
   collection: "Collection"
+  no_collection: "(None)"
+  collection_list: "Collections"
   sketch: "Sketch"
+  sketch_list: "Sketches"
   artist: "Artist"
-  
+  artist_list: "Artists"
+  link: "Link"
+  untitled_collection: "(Blank)"
+  actions: "Actions"
+  people: People
+  action:
+    view: View
+    view_sketch: View sketch
+    edit: Edit
+    delete_short: X
+  artists:
+    index:
+      title: Sketchnote Artists
+  activerecord:
+    attributes:
+      collection:
+        name: Collection
+        date_string: Date(s)
+      artist:
+        image_url: Image URL
+        url: URL
+      sketch:
+        url: URL
+        artist_id: Artist
+        collection_id: Collection
+        topic_id: Topic
+        created_at: Date added

@@ -1,12 +1,40 @@
 class SketchesController < ApplicationController
   # GET /sketches
   # GET /sketches.json
-  def index
-    @sketches = Sketch.all
+  skip_before_filter :authenticate_user!, :only => [:grouped, :index, :show]
+  handles_sortable_columns
+  autocomplete :artist, :name
+  autocomplete :collection, :name
+  autocomplete :topic, :name
 
+  def grouped
+    sketches = Sketch.includes(:topic => :collection).includes(:artist).order("collections.name, topics.name, artists.name")
+    @by_collection = Hash.new { |h,k| h[k] = Hash.new { |h2,k2| h2[k2] = Array.new }}
+    @artists = Hash.new { |h,k| h[k] = Hash.new }
+    sketches.each do |sketch|
+      collection = sketch.topic && sketch.topic.collection
+      topic = sketch.topic
+      @by_collection[collection][topic] << sketch
+      @artists[collection][sketch.artist] = sketch.artist
+    end
+  end
+  
+  def index
+    order = sortable_column_order do |column, direction|
+      case column
+      when "topic"
+        "topics.name #{direction}, artists.name #{direction}"
+      when "artists.name", "sketches.created_at"
+        "#{column} #{direction}"
+      else
+        "collections.name #{direction}, topics.name #{direction}, artists.name #{direction}"
+      end
+    end
+    @sketches = Sketch.includes(:topic => :collection).includes(:artist).order(order)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @sketches }
+      format.csv { render csv: @sketches.all }
     end
   end
 
@@ -14,7 +42,7 @@ class SketchesController < ApplicationController
   # GET /sketches/1.json
   def show
     @sketch = Sketch.find(params[:id])
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @sketch }
@@ -24,7 +52,7 @@ class SketchesController < ApplicationController
   # GET /sketches/new
   # GET /sketches/new.json
   def new
-    @sketch = Sketch.new
+    @sketch = Sketch.new()
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,11 +68,11 @@ class SketchesController < ApplicationController
   # POST /sketches
   # POST /sketches.json
   def create
-    @sketch = Sketch.new(params[:sketch])
+    @sketch = Sketch.process(params[:sketch]) 
 
     respond_to do |format|
       if @sketch.save
-        format.html { redirect_to @sketch, notice: 'Sketch was successfully created.' }
+        format.html { redirect_to (!params[:destination].blank? && params[:destination]) || new_sketch_path(nil, params), notice: 'Sketch was successfully created.' }
         format.json { render json: @sketch, status: :created, location: @sketch }
       else
         format.html { render action: "new" }
@@ -57,9 +85,33 @@ class SketchesController < ApplicationController
   # PUT /sketches/1.json
   def update
     @sketch = Sketch.find(params[:id])
-
+    @sketch.url = params[:sketch][:url]
+    old_topic = nil
+    old_topic = @sketch.topic.name if @sketch.topic
+    
+    old_collection = nil
+    old_collection = @sketch.topic.collection.name if @sketch.topic and @sketch.topic.collection
+    old_artist = nil
+    old_artist = @sketch.artist.name if @sketch.artist
+    
+    if params[:sketch][:conference] != old_collection
+      collection = Collection.get_or_create(params[:sketch][:conference])
+    else
+      collection = @sketch.topic.collection if @sketch.collection
+    end
+    if params[:sketch][:topic] != old_topic
+      topic = Topic.get_or_create(params[:sketch][:conference], collection)
+    else
+      topic.collection = collection
+      topic.save!
+    end
+    if params[:sketch][:artist] != old_artist
+      artist = Artist.get_or_create(params[:sketch][:artist])
+    end
+    @sketch.topic = topic
+    @sketch.artist = artist
     respond_to do |format|
-      if @sketch.update_attributes(params[:sketch])
+      if @sketch.save
         format.html { redirect_to @sketch, notice: 'Sketch was successfully updated.' }
         format.json { head :no_content }
       else

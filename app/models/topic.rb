@@ -4,14 +4,16 @@ class Topic < ActiveRecord::Base
   has_many :sketches
   
   def self.get_or_create(search, collection = nil)
+    search = '' if search.blank?
+    collection ||= ''
     if search.is_a? Topic then return search end
     if collection.blank?
-      Ambiguity.handle(Topic.where(name: search), :topic) do
+      return Ambiguity.handle(Topic.where(name: search), :topic) do
         Topic.create(name: search)
       end
     end
     # There is a collection. Is it an object?
-    collection = Collection.get_or_create(collection) if collection.is_a? String
+    collection = Collection.get_or_create(collection) if collection.is_a? String or collection.blank?
     if collection.is_a? Collection
       list = collection.topics.where(name: search)
       Ambiguity.handle(collection.topics.where(name: search), :topic) do

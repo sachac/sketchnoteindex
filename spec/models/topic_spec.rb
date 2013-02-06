@@ -21,16 +21,17 @@ describe Topic do
     b = FactoryGirl.create(:topic, name: "Conference topic")
     expect { Topic.get_or_create("Conference topic") }.to raise_error
   end
-  it "can disambiguate by collection object" do
+  it "disambiguates by collection object" do
     a = FactoryGirl.create(:topic, name: "Conference topic")
     b = FactoryGirl.create(:topic, name: "Conference topic")
     Topic.get_or_create("Conference topic", a.collection).should == a
   end
-  it "can disambiguate by collection name" do
+  it "disambiguates by collection name" do
     a = FactoryGirl.create(:topic, name: "Conference topic")
     b = FactoryGirl.create(:topic, name: "Conference topic")
     Topic.get_or_create("Conference topic", a.collection.name).should == a
   end
+  it "can merge duplicates"
   # it "knows the number of contributing artists" do
   #   t = FactoryGirl.create(:topic)
   #   s = Sketch.process(url: "http://example.com/png", artist: "John Smith", topic: t)

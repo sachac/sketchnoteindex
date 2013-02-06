@@ -1,15 +1,21 @@
-%p#notice= notice
-
-%p
-  %b Name:
+%h1
+  - if @artist.image_url
+    = image_tag(@artist.image_url)
   = @artist.name
-%p
-  %b Image url:
-  = @artist.image_url
-%p
-  %b Url:
-  = @artist.url
+= link_to @artist.url, @artist.url if @artist.url
 
-= link_to 'Edit', edit_artist_path(@artist)
-\|
-= link_to 'Back', artists_path
+- if can? :edit, @artist
+  = link_to 'Edit', edit_artist_path(@artist)
+  \|
+  = link_to 'Back', artists_path
+
+%table.table-striped.table
+  %tr
+    %th= t('collection')
+    %th= t('topic')
+    %th
+  - @sketches.each do |s|
+    %tr
+      %td= link_to s.collection.name, s.collection if s.collection
+      %td= link_to s.topic.name, s.topic if s.topic
+      %td= action_list s

@@ -1,0 +1,7 @@
+.navbar
+  .navbar-inner
+    .brand= link_to t('app_name'), root_path
+    %ul.nav
+      = nav_link t('sketch_list'), sketches_path
+      = nav_link t('collection_list'), collections_path
+      = nav_link t('artist_list'), artists_path

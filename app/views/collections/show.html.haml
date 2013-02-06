@@ -1,18 +1,21 @@
-%p#notice= notice
+.page-header
+  %h1= @collection.name
+.date= @collection.date_string
+.location= @collection.location
+- if can? :edit, @collection
+  = link_to 'Edit', edit_collection_path(@collection)
+  \|
+  = link_to 'Back', collections_path
 
-%p
-  %b Name:
-  = @collection.name
-%p
-  %b Date string:
-  = @collection.date_string
-%p
-  %b Start date:
-  = @collection.start_date
-%p
-  %b Location:
-  = @collection.location
-
-= link_to 'Edit', edit_collection_path(@collection)
-\|
-= link_to 'Back', collections_path
+%table.table-striped.table
+  %tr
+    %th= t('topic')
+    %th= t('people')
+    %th= t('artist')
+    %th= t('actions')
+  - @sketches.each do |t|
+    %tr
+      %td= link_to t.topic.name, t.topic
+      %td= t.topic.people
+      %td= link_to t.artist.name, t.artist
+      %td= action_list t

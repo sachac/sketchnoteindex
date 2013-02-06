@@ -1,15 +1,24 @@
-%p#notice= notice
+- if @topic.collection
+  %ul.breadcrumb.collection
+    %li= link_to collection_name(@topic.collection), @topic.collection
+    &raquo;
+.page-header
+  %h1
+    = @topic.name
+    %small.people= @topic.people if @topic.people
+= action_list @topic
 
-%p
-  %b Name:
-  = @topic.name
-%p
-  %b People:
-  = @topic.people
-%p
-  %b Collection:
-  = @topic.collection_id
+- if can? :create, Sketch
+  = link_to t('add_sketch_to_topic'), new_sketch_path(sketch: {topic: @topic.name, collection: @topic.collection && @topic.collection.name, people: @topic.people})
 
-= link_to 'Edit', edit_topic_path(@topic)
-\|
-= link_to 'Back', topics_path
+%table.table-striped.table
+  %tr
+    %th= t('artist')
+    %th= t('upload_date')
+    %th
+  - @sketches.each do |s|
+    %tr
+      %td= link_to s.artist.name, s.artist if s.artist
+      %td= link_to l(s.upload_date.to_date, format: :long), s if s.upload_date
+      %td= action_list s
+

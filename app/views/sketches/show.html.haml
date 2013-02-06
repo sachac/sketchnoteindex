@@ -1,18 +1,22 @@
-%p#notice= notice
+- if @sketch.topic.collection
+  %p
+    %b= t('activerecord.attributes.sketch.collection_id')
+    = link_to @sketch.topic.collection.name, @sketch.topic.collection
+- if @sketch.topic
+  %p
+    %b= t('activerecord.attributes.sketch.topic_id')
+    = link_to @sketch.topic.name, @sketch.topic
+  - if @sketch.topic.people
+    %p
+      %b= t('activerecord.attributes.topic.people')
+      = @sketch.topic.people
+%p
+  %b= t('activerecord.attributes.sketch.artist_id')
+  = link_to @sketch.artist.name, @sketch.artist if @sketch.artist
+%p
+  %b= t('activerecord.attributes.sketch.url')
+  = link_to @sketch.url, @sketch.url
+%p
+  %b= t('activerecord.attributes.sketch.upload_date')
+  = l(@sketch.upload_date.to_date)
 
-%p
-  %b Topic:
-  = @sketch.topic_id
-%p
-  %b Artist:
-  = @sketch.artist_id
-%p
-  %b Url:
-  = @sketch.url
-%p
-  %b Upload date:
-  = @sketch.upload_date
-
-= link_to 'Edit', edit_sketch_path(@sketch)
-\|
-= link_to 'Back', sketches_path

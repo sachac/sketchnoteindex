@@ -14,6 +14,7 @@ class ArtistsController < ApplicationController
   # GET /artists/1.json
   def show
     @artist = Artist.find(params[:id])
+    @sketches = @artist.sketches.includes(:topic => :collection).order('collections.name, topics.name')
 
     respond_to do |format|
       format.html # show.html.erb

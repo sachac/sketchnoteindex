@@ -1,25 +1,19 @@
-%h1 Listing sketches
-
-%table
+%div{:style => 'text-align: right'}
+  = link_to t('download_as_spreadsheet'), url_for(:only_path => false, :format => :csv)
+%table.table.table-striped
   %tr
-    %th Topic
-    %th Artist
-    %th Url
-    %th Upload date
-    %th
-    %th
-    %th
-
+    %th= sortable_column t('collection'), :column => 'collection'
+    %th= sortable_column t('topic'), :column => 'topic'
+    %th= sortable_column t('artist'), :column => 'artists.name'
+    %th= sortable_column t('activerecord.attributes.sketch.created_at'), :column => 'sketches.created_at', :direction => :desc
+    %th= t('actions')
   - @sketches.each do |sketch|
     %tr
-      %td= sketch.topic_id
-      %td= sketch.artist_id
-      %td= sketch.url
-      %td= sketch.upload_date
-      %td= link_to 'Show', sketch
-      %td= link_to 'Edit', edit_sketch_path(sketch)
-      %td= link_to 'Destroy', sketch, method: :delete, data: { confirm: 'Are you sure?' }
+      %td= link_to sketch.topic.collection.name, sketch.topic.collection if sketch.topic and sketch.topic.collection
+      %td= link_to sketch.topic.name, sketch.topic if sketch.topic
+      %td= link_to(sketch.artist.name, sketch.artist) if sketch.artist
+      %td= l(sketch.created_at.to_date, :format => :short)
+      %td= action_list sketch
 
-%br
-
-= link_to 'New Sketch', new_sketch_path
+- if can? :create, Sketch
+  = link_to 'New Sketch', new_sketch_path

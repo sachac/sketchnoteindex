@@ -1,0 +1,24 @@
+%ul.nav.nav-pills
+  - @by_collection.each do |collection, topic_list|
+    %li
+      - collection_name = (collection && collection.name || t('no_collection'))
+      - collection_name += " (" + @artists[collection].size.to_s + ")" if collection and @artists[collection].size > 1
+      = link_to collection_name, anchor: 'collection-' + (collection && collection.name && collection.name.parameterize || '')
+
+%table.table.table-bordered
+  - @by_collection.each do |(collection, topic_list)|
+    %tr
+      %th{colspan: 3}
+        %h2{id: "collection-" + (collection && collection.name && collection.name.parameterize || '')}= collection.name if collection
+        - if collection
+          = @artists[collection].map { |key, artist| link_to artist.name, artist }.join(', ').html_safe
+    - topic_list.each do |topic, sketch_list|
+      %tr
+        %td
+          - sketch_list.each do |sketch|
+            = link_to sketch.artist.name, sketch.url, class: 'label'
+        %td= link_to topic.name, topic if topic
+        %td= topic.people if topic
+
+- if can? :create, Sketch
+  = link_to 'New Sketch', new_sketch_path

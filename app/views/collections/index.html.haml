@@ -1,25 +1,16 @@
-%h1 Listing collections
-
-%table
+%table.table.table-lined
   %tr
-    %th Name
-    %th Date string
-    %th Start date
-    %th Location
-    %th
-    %th
-    %th
+    %th= t('activerecord.attributes.collection.name')
+    %th= t('activerecord.attributes.collection.date_string')
+    %th= t('activerecord.attributes.collection.location')
+    %th= t('actions')
 
   - @collections.each do |collection|
     %tr
-      %td= collection.name
+      %td= link_to collection.name, collection
       %td= collection.date_string
-      %td= collection.start_date
       %td= collection.location
-      %td= link_to 'Show', collection
-      %td= link_to 'Edit', edit_collection_path(collection)
-      %td= link_to 'Destroy', collection, method: :delete, data: { confirm: 'Are you sure?' }
-
+      %td= action_list collection
 %br
 
 = link_to 'New Collection', new_collection_path
