@@ -4,8 +4,10 @@
   - @by_collection.each do |collection, topic_list|
     %li
       - collection_name = (collection && collection.name || t('no_collection'))
-      - collection_name += " (" + @artists[collection].size.to_s + ")" if collection and @artists[collection].size > 1
-      = link_to collection_name, anchor: 'collection-' + (collection && collection.name && collection.name.parameterize || '')
+      = link_to({anchor: 'collection-' + (collection && collection.name && collection.name.parameterize || '')}, {style: "line-height: 140%"}) do
+        = collection_name
+        - if collection and @artists[collection].size > 1
+          %span.label.label-info= @artists[collection].size
 
 %table.table.table-bordered
   - @by_collection.each do |(collection, topic_list)|
