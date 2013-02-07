@@ -84,19 +84,22 @@ class SketchesController < ApplicationController
     old_artist = nil
     old_artist = @sketch.artist.name if @sketch.artist
     
-    if params[:sketch][:conference] != old_collection
-      collection = Collection.get_or_create(params[:sketch][:conference])
+    if params[:sketch][:collection] != old_collection
+      collection = Collection.get_or_create(params[:sketch][:collection])
     else
       collection = @sketch.topic.collection if @sketch.collection
     end
     if params[:sketch][:topic] != old_topic
-      topic = Topic.get_or_create(params[:sketch][:conference], collection)
+      topic = Topic.get_or_create(params[:sketch][:topic], collection)
     else
+      topic = @sketch.topic
       topic.collection = collection
       topic.save!
     end
     if params[:sketch][:artist] != old_artist
       artist = Artist.get_or_create(params[:sketch][:artist])
+    else 
+      artist = @sketch.artist
     end
     @sketch.topic = topic
     @sketch.artist = artist

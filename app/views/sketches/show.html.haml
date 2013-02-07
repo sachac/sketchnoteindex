@@ -16,7 +16,8 @@
 %p
   %b= t('activerecord.attributes.sketch.url')
   = link_to @sketch.url, @sketch.url
-%p
-  %b= t('activerecord.attributes.sketch.upload_date')
-  = l(@sketch.upload_date.to_date)
+- if @sketch.upload_date
+  %p
+    %b= t('activerecord.attributes.sketch.upload_date')
+    = l(@sketch.upload_date.to_date)
 
