@@ -1,10 +1,12 @@
 = render 'contact_me'
 
+%p= "#{Sketch.count} sketches/topics by #{Artist.count} artists covering #{Topic.count} topics in #{Collection.count} collections"
+
 %ul.nav.nav-pills
   - @by_collection.each do |collection, topic_list|
     %li
       - collection_name = (collection && collection.name || t('no_collection'))
-      = link_to({anchor: 'collection-' + (collection && collection.name && collection.name.parameterize || '')}, {style: "line-height: 140%"}) do
+      = link_to('#collection-' + (collection && collection.name && collection.name.parameterize || ''), {style: "line-height: 140%"}) do
         = collection_name
         - if collection and @artists[collection].size > 1
           %span.label.label-info= @artists[collection].size

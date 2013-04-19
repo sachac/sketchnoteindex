@@ -2,7 +2,7 @@ module ApplicationHelper
   def action_list(o)
     list = Array.new
     if o.instance_of? Sketch
-      list << link_to(t('action.view_sketch'), o.url, :class => 'icon-eye-open icon')
+      list << link_to(t('action.view_sketch'), o.url)
     else
       list << link_to(t('action.view'), o, :class => 'icon-folder-open icon')
     end

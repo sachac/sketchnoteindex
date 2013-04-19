@@ -1,6 +1,7 @@
 class CollectionsController < ApplicationController
   # GET /collections
   # GET /collections.json
+  caches_page :index
   def index
     if request.format == :html
       sketches = Sketch.includes(:topic => :collection).includes(:artist).order("collections.name, topics.name, artists.name")
@@ -68,6 +69,8 @@ class CollectionsController < ApplicationController
   # PUT /collections/1.json
   def update
     @collection = Collection.find(params[:id])
+    expire_front
+
 
     respond_to do |format|
       if @collection.update_attributes(params[:collection])

@@ -59,6 +59,7 @@ class SketchesController < ApplicationController
   # POST /sketches.json
   def create
     @sketch = Sketch.process(params[:sketch]) 
+    expire_front
 
     respond_to do |format|
       if @sketch.save
@@ -76,6 +77,8 @@ class SketchesController < ApplicationController
   def update
     @sketch = Sketch.find(params[:id])
     @sketch.url = params[:sketch][:url]
+    expire_front
+
     old_topic = nil
     old_topic = @sketch.topic.name if @sketch.topic
     
@@ -119,7 +122,7 @@ class SketchesController < ApplicationController
   def destroy
     @sketch = Sketch.find(params[:id])
     @sketch.destroy
-
+    expire_front
     respond_to do |format|
       format.html { redirect_to sketches_url }
       format.json { head :no_content }

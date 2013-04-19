@@ -68,6 +68,8 @@ class ArtistsController < ApplicationController
   # PUT /artists/1.json
   def update
     @artist = Artist.find(params[:id])
+    expire_front 
+
 
     respond_to do |format|
       if @artist.update_attributes(params[:artist])
