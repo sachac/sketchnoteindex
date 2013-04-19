@@ -63,7 +63,7 @@ class SketchesController < ApplicationController
 
     respond_to do |format|
       if @sketch.save
-        format.html { redirect_to (!params[:destination].blank? && params[:destination]) || new_sketch_path(nil, params), notice: 'Sketch was successfully created.' }
+        format.html { redirect_to (!params[:destination].blank? && params[:destination]) || new_sketch_path(nil, params), notice: "#{@sketch.topic.name} by #{@sketch.artist.name} was successfully created." }
         format.json { render json: @sketch, status: :created, location: @sketch }
       else
         format.html { render action: "new" }
