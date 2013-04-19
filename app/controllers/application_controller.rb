@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     end
   end
   def expire_front
-    expire_page '/index.html'
-    expire_page controller: 'collections', action: 'index'
+#    expire_page '/index.html'
+#    expire_page controller: 'collections', action: 'index'
   end
 end

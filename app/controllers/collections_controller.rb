@@ -1,7 +1,7 @@
 class CollectionsController < ApplicationController
   # GET /collections
   # GET /collections.json
-  caches_page :index
+#  caches_page :index
   def index
     if request.format == :html
       sketches = Sketch.includes(:topic => :collection).includes(:artist).order("collections.name, topics.name, artists.name")

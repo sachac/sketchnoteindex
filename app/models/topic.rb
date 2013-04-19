@@ -7,13 +7,13 @@ class Topic < ActiveRecord::Base
     search = '' if search.blank?
     collection ||= ''
     if search.is_a? Topic then return search end
-    if collection.blank?
+    if collection.blank? or collection == ""
       return Ambiguity.handle(Topic.where(name: search), :topic) do
         Topic.create(name: search)
       end
     end
     # There is a collection. Is it an object?
-    collection = Collection.get_or_create(collection) if collection.is_a? String or collection.blank?
+    collection = Collection.get_or_create(collection) if collection.is_a? String and !collection.blank?
     if collection.is_a? Collection
       list = collection.topics.where(name: search)
       Ambiguity.handle(collection.topics.where(name: search), :topic) do
