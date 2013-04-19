@@ -25,7 +25,7 @@
           = @artists[collection].map { |key, artist| link_to artist.name, artist }.join(', ').html_safe
     - topic_list.each do |topic, sketch_list|
       %tr
-        %td
+        %td{width: "30%"}
           - sketch_list.each do |sketch|
             = link_to sketch.artist.name, sketch.url, class: 'label'
         %td= link_to topic.name, topic if topic
